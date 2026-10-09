@@ -1,0 +1,57 @@
+
+{
+  "domain": "hotel",
+  "currency": "INR",
+  "products": [
+    {
+      "id": "deluxe_room",
+      "name": "Deluxe Room",
+      "base": {"type": "fixed", "value": 3000}
+    }
+  ],
+  "strategy": {
+    "stacking": "sequential",
+    "rounding": {"mode": "nearest", "step": 10}
+  },
+  "rules": [
+    {
+      "id": "R1",
+      "name": "Weekend uplift",
+      "priority": 10,
+      "when": {
+        "any": [
+          {"attr": "day_of_week", "op": "==", "value": "Sat"},
+          {"attr": "day_of_week", "op": "==", "value": "Sun"}
+        ]
+      },
+      "then": {"type": "percent", "value": 20}
+    },
+    {
+      "id": "R2",
+      "name": "High occupancy",
+      "priority": 20,
+      "when": {
+        "attr": "occupancy_percent",
+        "op": ">",
+        "value": 80
+      },
+      "then": {"type": "percent", "value": 15}
+    },
+    {
+      "id": "R3",
+      "name": "Loyalty discount",
+      "priority": 30,
+      "when": {
+        "attr": "customer_segment",
+        "op": "==",
+        "value": "loyalty"
+      },
+      "then": {"type": "percent", "value": -10}
+    }
+  ],
+  "constraints": {
+    "min_price": 2000,
+    "max_price": 6000
+  }
+}
+
